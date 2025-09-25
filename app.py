@@ -83,14 +83,14 @@ if st.button("Predict Churn"):
     model = pipeline.named_steps['catboost']
     preprocessor = pipeline.named_steps['preprocessor']
 
-    # Transform input using preprocessor for SHAP
+    # Transform input using preprocessor
     input_transformed = preprocessor.transform(input_data)
     feature_names = preprocessor.get_feature_names_out()
 
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(input_transformed)
 
-    # Generate SHAP force plot (HTML)
+    # Generate SHAP force plot
     shap_plot = shap.force_plot(
         explainer.expected_value,
         shap_values[0, :],
@@ -98,5 +98,7 @@ if st.button("Predict Churn"):
         matplotlib=False
     )
 
-    # Display in Streamlit without matplotlib
-    components.html(shap_plot.html(), height=300)
+    # Save SHAP plot to HTML and display in Streamlit
+    shap.save_html("shap_force_plot.html", shap_plot)
+    with open("shap_force_plot.html", "r", encoding="utf-8") as f:
+        components.html(f.read(), height=400)
