@@ -65,7 +65,31 @@ input_data = pd.DataFrame([{
 }])
 
 # =====================
-# Run prediction
+# Compute derived features
+# =====================
+input_data['AvgMonthlySpend'] = input_data['TotalCharges'] / (input_data['tenure'] + 1)
+input_data['NumServices'] = (
+    (input_data['PhoneService'] == 'Yes').astype(int) +
+    (input_data['InternetService'] != 'No').astype(int) +
+    (input_data['OnlineSecurity'] == 'Yes').astype(int) +
+    (input_data['OnlineBackup'] == 'Yes').astype(int) +
+    (input_data['DeviceProtection'] == 'Yes').astype(int) +
+    (input_data['TechSupport'] == 'Yes').astype(int) +
+    (input_data['StreamingTV'] == 'Yes').astype(int) +
+    (input_data['StreamingMovies'] == 'Yes').astype(int)
+)
+input_data['IsSenior'] = input_data['SeniorCitizen']
+input_data['TenureGroup'] = pd.cut(
+    input_data['tenure'],
+    bins=[-1, 12, 24, 48, 60, 72],
+    labels=['0-12','13-24','25-48','49-60','61-72']
+)
+input_data['PaymentTypeSimple'] = input_data['PaymentMethod'].apply(
+    lambda x: 'Electronic' if 'Electronic' in x else ('Automatic' if 'automatic' in x else 'Mailed')
+)
+
+# =====================
+# Make prediction
 # =====================
 if st.button("Predict Churn"):
     prediction = pipeline.predict(input_data)[0]
@@ -80,10 +104,11 @@ if st.button("Predict Churn"):
     # =====================
     st.subheader("📈 Model Explainability (SHAP)")
 
+    # Extract model and preprocessor from pipeline
     model = pipeline.named_steps['catboost']
     preprocessor = pipeline.named_steps['preprocessor']
 
-    # Transform input using preprocessor
+    # Transform input for SHAP
     input_transformed = preprocessor.transform(input_data)
     feature_names = preprocessor.get_feature_names_out()
 
@@ -98,7 +123,7 @@ if st.button("Predict Churn"):
         matplotlib=False
     )
 
-    # Save SHAP plot to HTML and display in Streamlit
+    # Display in Streamlit
     shap.save_html("shap_force_plot.html", shap_plot)
     with open("shap_force_plot.html", "r", encoding="utf-8") as f:
         components.html(f.read(), height=400)
