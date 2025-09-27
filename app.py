@@ -2,7 +2,13 @@ import streamlit as st
 import pandas as pd
 import pickle
 import shap
-import streamlit.components.v1 as components
+
+# =====================
+# SHAP Helper for Streamlit
+# =====================
+def st_shap(plot, height=None):
+    shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
+    st.components.v1.html(shap_html, height=height)
 
 # =====================
 # Load trained pipeline
@@ -115,15 +121,12 @@ if st.button("Predict Churn"):
     explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(input_transformed)
 
-    # Generate SHAP force plot
+    # Directly embed SHAP force plot in Streamlit
     shap_plot = shap.force_plot(
         explainer.expected_value,
         shap_values[0, :],
         feature_names=feature_names,
         matplotlib=False
     )
+    st_shap(shap_plot, 400)
 
-    # Display in Streamlit
-    shap.save_html("shap_force_plot.html", shap_plot)
-    with open("shap_force_plot.html", "r", encoding="utf-8") as f:
-        components.html(f.read(), height=400)

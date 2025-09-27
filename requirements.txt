@@ -1,8 +1,11 @@
-streamlit==1.38.0
-pandas==2.2.2
-scikit-learn==1.5.2
-catboost==1.2.5
-shap==0.44.1
+streamlit
+pandas
+scikit-learn
+catboost
+shap
+matplotlib
+
+
 
 
 
