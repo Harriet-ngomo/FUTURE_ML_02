@@ -103,24 +103,46 @@ The project success was measured against business-driven KPIs:
 I computed SHAP values for the final CatBoost pipeline to explain global and local predictions. The main visualizations produced:
 
 1. **SHAP Summary Plot (dot plot)**
-  <img width="554" height="667" alt="image" src="https://github.com/user-attachments/assets/b30b86e3-a67a-4524-b9d1-06a2305dab39" />
+
+<p align="center">
+  <img width="554" height="667" alt="SHAP summary plot" src="https://github.com/user-attachments/assets/b30b86e3-a67a-4524-b9d1-06a2305dab39" />
+</p>
 
    - Visualizes feature impact and direction across all test samples.
+
 2. **SHAP Feature Importance (bar plot)**
-   <img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/42496805-e423-4138-8c15-932171cade22" />
+
+<p align="center">
+  <img width="559" height="667" alt="SHAP bar plot" src="https://github.com/user-attachments/assets/42496805-e423-4138-8c15-932171cade22" />
+</p>
 
    - Ranks features by mean absolute SHAP value.
+
 3. **SHAP Force Plot (single sample)**
-    <img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/dd7df209-b256-4be8-9f32-c165fbbbac4d" />
+
+<p align="center">
+  <img width="559" height="667" alt="SHAP force plot" src="https://github.com/user-attachments/assets/dd7df209-b256-4be8-9f32-c165fbbbac4d" />
+</p>
 
    - Explains how features push a single prediction toward/away from churn.
+
 4. **SHAP Dependence Plot** ( `tenure` vs `MonthlyCharges`)
- <img width="482" height="321" alt="image" src="https://github.com/user-attachments/assets/931ce0bb-5900-4010-a1f4-efbdb387f2f8" />
+
+<p align="center">
+  <img width="482" height="321" alt="SHAP dependence plot" src="https://github.com/user-attachments/assets/931ce0bb-5900-4010-a1f4-efbdb387f2f8" />
+</p>
   
    - Shows interaction effects and how feature values influence SHAP values.
+
 5. **SHAP Decision Plot (global & for first 20 samples)**
- <img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/2b2baf27-1d3c-4bff-91f8-e637235acfd3" />
-<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/61c79369-b590-4f47-afdc-15f9fbdac365" />
+
+<p align="center">
+  <img width="667" height="586" alt="SHAP decision plot global" src="https://github.com/user-attachments/assets/2b2baf27-1d3c-4bff-91f8-e637235acfd3" />
+</p>
+
+<p align="center">
+  <img width="667" height="586" alt="SHAP decision plot samples" src="https://github.com/user-attachments/assets/61c79369-b590-4f47-afdc-15f9fbdac365" />
+</p>
 
    - Shows cumulative feature contributions per sample and groups customers into churn/retain decision paths.
 
@@ -133,7 +155,7 @@ I computed SHAP values for the final CatBoost pipeline to explain global and loc
 - New customers (tenure < ~20 months) with high monthly charges have higher SHAP values → higher churn risk.
 
 
-## ✅ Conclusion & Recommendations  
+## Conclusion & Recommendations  
 
 ### Conclusion  
 - The CatBoost model was selected as the final model and deployed via **Streamlit**  
@@ -148,7 +170,7 @@ I computed SHAP values for the final CatBoost pipeline to explain global and loc
 
 ---
 
-## 📂 Project Structure  
+##  Project Structure  
 
 
 customer-churn-prediction/
@@ -159,4 +181,3 @@ customer-churn-prediction/
 ├── requirements.txt      # Python dependencies
 ├── README.md             # Project documentation
 └── models/               # Saved trained models
-
