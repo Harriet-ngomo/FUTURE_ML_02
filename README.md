@@ -34,9 +34,26 @@ Contains customer demographics, services, account details, and churn labels.
 
 ## Exploratory Data Analysis (EDA)  
 
-- **Univariate** → clean distributions, no extreme outliers.  
-- **Bivariate** → churn varies strongly by contract type, tenure, and payment method.  
-- **Multivariate correlations** → tenure, monthly charges, and churn are highly related.  
+- **Univariate**
+ <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/054e2ecb-5652-4c49-a204-e4cf983f2c1d" />
+ <img width="395" height="343" alt="image" src="https://github.com/user-attachments/assets/fe66234a-b2d1-47d0-b031-cda7f86a731a" />
+
+ - clean distributions, no extreme outliers
+
+
+- **Bivariate**
+  <img width="395" height="333" alt="image" src="https://github.com/user-attachments/assets/eff55d36-e985-441e-a8c7-874b8c20babc" />
+
+<img width="382" height="278" alt="image" src="https://github.com/user-attachments/assets/ff9bc856-4f4f-4a5f-bc54-f9be84efa4bd" />
+
+<img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/32c59712-6074-4518-8a1f-1d473619670d" />
+
+- churn varies strongly by contract type, tenure and payment method
+- **Multivariate correlations**
+ <img width="450" height="373" alt="image" src="https://github.com/user-attachments/assets/22dd7501-187a-4d4c-b41f-5246634ce196" />
+
+
+- tenure, monthly charges, and churn are highly related.  
 
 **Key Insights:**  
 - **Month-to-month contracts** and **electronic check payments** are high-risk churn factors.  
