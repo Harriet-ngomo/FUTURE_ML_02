@@ -25,7 +25,7 @@ Dataset size: ~7,000 records × 20+ features
 
 ---
 
-## 📊 Exploratory Data Analysis (EDA)  
+##  Exploratory Data Analysis (EDA)  
 
 - **Univariate analysis** showed well-distributed numerical features with no extreme outliers
 - **Bivariate analysis** revealed clear churn differences across categorical variables (contract type, tenure, payment method) 
@@ -97,6 +97,41 @@ The project success was measured against business-driven KPIs:
 - Class imbalance was successfully mitigated with **SMOTE** improving detection of churners 
 
 ---
+
+## SHAP Interpretability (what I ran & what it tells us)
+
+I computed SHAP values for the final CatBoost pipeline to explain global and local predictions. The main visualizations produced:
+
+1. **SHAP Summary Plot (dot plot)**
+  <img width="554" height="667" alt="image" src="https://github.com/user-attachments/assets/b30b86e3-a67a-4524-b9d1-06a2305dab39" />
+
+   - Visualizes feature impact and direction across all test samples.
+2. **SHAP Feature Importance (bar plot)**
+   <img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/42496805-e423-4138-8c15-932171cade22" />
+
+   - Ranks features by mean absolute SHAP value.
+3. **SHAP Force Plot (single sample)**
+    <img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/dd7df209-b256-4be8-9f32-c165fbbbac4d" />
+
+   - Explains how features push a single prediction toward/away from churn.
+4. **SHAP Dependence Plot** ( `tenure` vs `MonthlyCharges`)
+ <img width="482" height="321" alt="image" src="https://github.com/user-attachments/assets/931ce0bb-5900-4010-a1f4-efbdb387f2f8" />
+  
+   - Shows interaction effects and how feature values influence SHAP values.
+5. **SHAP Decision Plot (global & for first 20 samples)**
+ <img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/2b2baf27-1d3c-4bff-91f8-e637235acfd3" />
+<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/61c79369-b590-4f47-afdc-15f9fbdac365" />
+
+   - Shows cumulative feature contributions per sample and groups customers into churn/retain decision paths.
+
+**Key SHAP findings (business translation):**
+
+
+- **Contract_Two year** has one of the strongest protective effects (reduces churn risk).
+- **InternetService_Fiber optic** is a strong churn risk driver.
+- **Contract_One year**, **tenure**, **PaymentMethod_Electronic check**, and add-on services (TechSupport, OnlineSecurity) are also influential.
+- New customers (tenure < ~20 months) with high monthly charges have higher SHAP values → higher churn risk.
+
 
 ## ✅ Conclusion & Recommendations  
 
