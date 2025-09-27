@@ -1,36 +1,106 @@
-#  Customer Churn Prediction with CatBoost & Streamlit  
+#  Customer Churn Prediction
+# TELCOVISION ANALYTICS  
+## Project Overview  
 
-##  Overview  
-This project predicts customer churn for a telecommunications company.  
-Churn occurs when customers discontinue services, leading to significant revenue loss.  
+At **TelcoVision Analytics**, our mission is to help telecom companies use data-driven strategies to keep their customers happy and reduce the chances of them leaving.  
 
-By predicting churn, businesses can:  
-- implement targeted retention strategies,  
-- reduce customer acquisition costs, and  
-- improve lifetime value (LTV).  
+In today's competitive telecom market, **customer churn** (when people cancel their subscriptions or switch to other providers) can seriously hurt a company's revenue and growth. Acquiring new customers can cost **5 to 7 times more** than keeping existing ones satisfied.  
 
-We performed **EDA**, **feature engineering**, **class imbalance handling**, tested **7 machine learning models**, and finally deployed the **best model (CatBoost)** with **Streamlit** for interactive predictions and interpretability.  
+Currently, many companies deal with churn **reactively**, only after customers have already left. **TelcoVision Analytics** aims to change this by using **machine learning** to predict churn before it happens, enabling businesses to step in early with **personalized offers, better support, and improved customer experiences**.  
 
 ---
 
-##  Business & Data Understanding  
+## Business Problem  
 
-### Stakeholders  
-- **Customer Retention/Marketing Teams** → need to identify at-risk customers for campaigns.  
-- **Business Managers** → aim to reduce churn rate and improve profitability.  
-- **Data Science/MLOps Teams** → responsible for model building, deployment, and monitoring.  
+Telecom providers often lack the ability to accurately identify customers at risk of leaving. This leads to:  
+- Inefficient marketing spending on blanket retention campaigns  
+- Missed opportunities to retain valuable customers  
+- Declining revenue and reduced customer lifetime value  
 
-### Dataset  
-Contains customer demographics, services, account details, and churn labels.  
-
-- **Demographics** → Gender, SeniorCitizen, Partner, Dependents  
-- **Account Info** → Tenure, Contract type, Payment method, Paperless billing  
-- **Services** → Internet, Phone, Streaming, Security  
-- **Target** → `Churn` (Yes = left, No = stayed)  
-
-**Size**: ~7,000 customers × 20+ features  
+**Key Challenge:**  
+How can we leverage customer demographic, billing, and service usage data to accurately predict churn and proactively reduce customer attrition?  
 
 ---
+
+##  Stakeholders  
+
+| Stakeholder        | Role / Interest                                                             |
+|--------------------|------------------------------------------------------------------------------|
+| Marketing Teams    | Use churn predictions to target high-risk customers with personalized offers |
+| Customer Service   | Engage with at-risk customers to resolve issues early                        |
+| Senior Management  | Make strategic business decisions to reduce churn and increase revenue       |
+| Data Science Team  | Build and maintain churn prediction models                                   |
+| Customers          | Benefit from improved service, offers, and satisfaction                      |
+
+---
+
+## Business Objectives  
+
+- Improve customer retention by identifying and intervening with high-risk customers  
+- Build a predictive model to classify customers as **churn** or **non-churn**  
+- Uncover the most important factors influencing churn to guide business strategy  
+
+---
+
+## Analysis Objectives  
+
+- Build and evaluate a **machine learning classification model** to predict customer churn  
+- Start with **Logistic Regression (baseline)**, then experiment with advanced models:  
+  *Decision Trees, Random Forest, Gradient Boosting, XGBoost*  
+- Identify which attributes (e.g., **tenure, monthly charges, contract type**) most strongly predict churn  
+- Assess how well the models distinguish between churners and non-churners  
+
+---
+
+## Data Understanding  
+
+We use the **Telco Customer Churn Dataset** from Kaggle to build our prediction model.  
+
+### Dataset Overview  
+- **Records:** 7,043 customers  
+- **Features:** 21 (demographics, account info, services, churn label)  
+
+### Dataset Columns  
+
+| Column Name        | Description                                                    | Data Type                |
+|--------------------|----------------------------------------------------------------|--------------------------|
+| customerID         | Unique identifier for each customer                            | Categorical (ID)         |
+| gender             | Gender of the customer                                         | Categorical              |
+| SeniorCitizen      | Indicates if the customer is a senior citizen (1 = Yes, 0 = No)| Numeric (Binary)         |
+| Partner            | Whether the customer has a partner                             | Categorical              |
+| Dependents         | Whether the customer has dependents                            | Categorical              |
+| tenure             | Number of months the customer has stayed                       | Numeric (Discrete)       |
+| PhoneService       | Whether the customer has phone service                         | Categorical              |
+| MultipleLines      | Whether the customer has multiple phone lines                  | Categorical              |
+| InternetService    | Internet type (DSL, Fiber optic, None)                         | Categorical              |
+| OnlineSecurity     | Whether the customer has online security                       | Categorical              |
+| OnlineBackup       | Whether the customer has online backup                         | Categorical              |
+| DeviceProtection   | Whether the customer has device protection                     | Categorical              |
+| TechSupport        | Whether the customer has tech support                          | Categorical              |
+| StreamingTV        | Whether the customer has streaming TV                          | Categorical              |
+| StreamingMovies    | Whether the customer has streaming movies                      | Categorical              |
+| Contract           | Contract type (Month-to-month, One year, Two year)             | Categorical              |
+| PaperlessBilling   | Whether the customer uses paperless billing                    | Categorical              |
+| PaymentMethod      | Customer’s payment method                                      | Categorical              |
+| MonthlyCharges     | Amount charged monthly                                         | Numeric (Continuous)     |
+| TotalCharges       | Total amount billed                                            | Numeric (Continuous)     |
+| Churn              | Target: Whether the customer left (Yes = churn, No = stayed)   | Categorical (Target)     |
+
+---
+
+##  Data Source  
+
+- **Dataset Name:** Telco Customer Churn  
+- **Source:** Kaggle → [Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)  
+
+---
+
+## Prediction Target  
+
+We aim to predict the **`Churn`** variable, which indicates whether a customer has stopped using the service (`Yes`) or is still active (`No`).  
+
+This is a **binary classification problem**. 
+
 
 ## Exploratory Data Analysis (EDA)  
 
@@ -90,7 +160,11 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 | LightGBM              | GridSearchCV        | 0.69   | 0.55      | Fast boosting, balanced |
 | **CatBoost ✅**        | RandomizedSearchCV  | **0.90** | 0.44 | Best recall, selected final model |
 
-### Why CatBoost?  
+### Why CatBoost? 
+<img width="380" height="288" alt="image" src="https://github.com/user-attachments/assets/cfb89965-cd89-46ba-9051-b66d3b2e5aa2" />
+<img width="395" height="288" alt="image" src="https://github.com/user-attachments/assets/4f37383b-2231-4234-9b17-aff5b740d4b9" />
+
+
 - **Highest recall (0.90)** → captures the majority of churners.  
 - Lower precision is acceptable since **false negatives (missed churners)** are costlier than false positives.  
 - Handles categorical variables efficiently.  
@@ -108,6 +182,7 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 ---
 
 ##  SHAP Interpretability  
+<img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/44d3c7bf-2cca-494b-b54a-cc3ef80d7a83" />
 
 SHAP (SHapley Additive exPlanations) was applied to the **CatBoost model** for interpretability.  
 
