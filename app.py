@@ -157,3 +157,33 @@ with col2:
             matplotlib=False
         )
         st_shap(shap_plot, 400)
+
+        # =====================
+        # Additional SHAP Visualizations
+        # =====================
+        st.subheader("📊 Additional SHAP Visualizations")
+
+        # If shap_values is a list (e.g., for CatBoost multiclass), take the positive class
+        if isinstance(shap_values, list):
+            shap_values = shap_values[1]
+
+        # ---- SHAP Summary Plot ----
+        st.markdown("**SHAP Summary Plot**")
+        fig_summary, ax_summary = plt.subplots(figsize=(8, 6))
+        shap.summary_plot(shap_values, input_transformed, feature_names=feature_names, show=False)
+        st.pyplot(fig_summary)
+
+        # ---- SHAP Dependence Plot ----
+        st.markdown("**SHAP Dependence Plot**")
+        selected_feature = st.selectbox("Select feature for dependence plot:", feature_names)
+        fig_dependence, ax_dependence = plt.subplots(figsize=(6, 4))
+        shap.dependence_plot(selected_feature, shap_values, input_transformed,
+                             feature_names=feature_names, ax=ax_dependence, show=False)
+        st.pyplot(fig_dependence)
+
+        # ---- SHAP Decision Plot ----
+        st.markdown("**SHAP Decision Plot**")
+        fig_decision, ax_decision = plt.subplots(figsize=(8, 4))
+        shap.decision_plot(explainer.expected_value, shap_values[0, :],
+                           feature_names=feature_names, show=False, ax=ax_decision)
+        st.pyplot(fig_decision)
