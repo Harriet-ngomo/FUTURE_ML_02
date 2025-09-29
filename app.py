@@ -101,24 +101,9 @@ with col1:
     )
 
 # ---------------------
-# RIGHT COLUMN (Intro + Prediction + SHAP + Distribution)
+# RIGHT COLUMN (Prediction + SHAP + Distribution)
 # ---------------------
 with col2:
-    # Intro section in right column
-    st.markdown(
-        """
-        This app predicts the probability of a customer churning based on their details.  
-        After entering the customer info on the left, click **Predict Churn** to see:  
-        - A churn prediction result with probability  
-        - A distribution of churn probabilities across the dataset  
-        - SHAP explainability showing feature contributions  
-        """
-    )
-
-    # File uploader for training data
-    st.markdown("### 📂 Upload Training Data for Distribution Plot")
-    uploaded_file = st.file_uploader("Upload Training Data (CSV)", type="csv")
-
     if st.button("Predict Churn"):
         prediction = pipeline.predict(input_data)[0]
         proba = pipeline.predict_proba(input_data)[0][1]
@@ -131,13 +116,9 @@ with col2:
         # Churn Probability Distribution
         # =====================
         st.subheader("📊 Churn Probability Distribution")
-        if uploaded_file is not None:
-            try:
-                training_data = pd.read_csv(uploaded_file)
-
-                # Preprocess uploaded data
-                X_train_transformed = pipeline.named_steps['preprocessor'].transform(training_data)
-                all_probs = pipeline.named_steps['catboost'].predict_proba(X_train_transformed)[:, 1]
+        try:
+            if hasattr(pipeline, "X_train_"):
+                all_probs = pipeline.predict_proba(pipeline.X_train_)[:, 1]
 
                 fig, ax = plt.subplots()
                 sns.histplot(all_probs, bins=20, kde=True, ax=ax)
@@ -147,11 +128,10 @@ with col2:
                 ax.set_ylabel("Count")
                 ax.legend()
                 st.pyplot(fig)
-
-            except Exception as e:
-                st.error(f"Could not generate distribution plot: {e}")
-        else:
-            st.info("Upload training data to see the churn probability distribution.")
+            else:
+                st.warning("Training data not available in pipeline. Distribution cannot be shown.")
+        except Exception as e:
+            st.error(f"Could not generate distribution plot: {e}")
 
         # =====================
         # SHAP Explainability
