@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import pickle
 import shap
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # =====================
 # SHAP Helper for Streamlit
@@ -18,6 +20,16 @@ with open("catboost_pipeline.pkl", "rb") as f:
 
 st.set_page_config(layout="wide")  # wide mode for 2-column layout
 st.title("📊 Customer Churn Prediction with Explainability")
+
+# ---------------------
+# Introduction
+# ---------------------
+st.markdown(
+    """
+    This app predicts the probability of a customer churning based on their information.  
+    Please provide the customer’s details in the sidebar to get a prediction and explanation.
+    """
+)
 
 # =====================
 # Two-column layout
@@ -99,7 +111,7 @@ with col1:
     )
 
 # ---------------------
-# RIGHT COLUMN (Prediction + SHAP)
+# RIGHT COLUMN (Prediction + SHAP + Distribution)
 # ---------------------
 with col2:
     if st.button("Predict Churn"):
@@ -110,6 +122,34 @@ with col2:
         st.write(f"Churn: **{'Yes' if prediction == 1 else 'No'}**")
         st.write(f"Probability of Churn: **{proba:.2f}**")
 
+        # =====================
+        # Churn Probability Distribution
+        # =====================
+        st.subheader("📊 Churn Probability Distribution")
+        # Get churn probabilities for all customers (from training data inside pipeline)
+        try:
+            # Assuming pipeline was trained with X_train stored
+            if hasattr(pipeline, "X_train_"):
+                all_probs = pipeline.predict_proba(pipeline.X_train_)[:, 1]
+            else:
+                st.warning("Training data not available in pipeline. Distribution cannot be shown.")
+                all_probs = None
+
+            if all_probs is not None:
+                fig, ax = plt.subplots()
+                sns.histplot(all_probs, bins=20, kde=True, ax=ax)
+                ax.axvline(proba, color="red", linestyle="--", label="Current Customer")
+                ax.set_title("Distribution of Predicted Churn Probabilities")
+                ax.set_xlabel("Churn Probability")
+                ax.set_ylabel("Count")
+                ax.legend()
+                st.pyplot(fig)
+        except Exception as e:
+            st.error(f"Could not generate distribution plot: {e}")
+
+        # =====================
+        # SHAP Explainability
+        # =====================
         st.subheader("📈 Model Explainability (SHAP)")
 
         # Extract model and preprocessor from pipeline
