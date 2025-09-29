@@ -102,36 +102,29 @@ We aim to predict the **`Churn`** variable, which indicates whether a customer h
 
 This is a **binary classification problem**. 
 
+---
 
 ## Exploratory Data Analysis (EDA)  
 
-- **Univariate**
-  <img width="444" height="288" alt="image" src="https://github.com/user-attachments/assets/c95f4cac-9443-419a-b748-b78098320fe1" /
-  <img width="488" height="285" alt="image" src="https://github.com/user-attachments/assets/66f1e581-a666-46c5-aa48-15a6a24315e0" />
-  <img width="544" height="299" alt="image" src="https://github.com/user-attachments/assets/48c33e5e-4d94-456f-9f7b-9b2684adaf95" />
+- **Univariate**  
+<img width="444" height="288" alt="image" src="https://github.com/user-attachments/assets/c95f4cac-9443-419a-b748-b78098320fe1" />  
+<img width="488" height="285" alt="image" src="https://github.com/user-attachments/assets/66f1e581-a666-46c5-aa48-15a6a24315e0" />  
+<img width="544" height="299" alt="image" src="https://github.com/user-attachments/assets/48c33e5e-4d94-456f-9f7b-9b2684adaf95" />  
 
-<p align="center">
-  <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/054e2ecb-5652-4c49-a204-e4cf983f2c1d" />  
-  <img width="395" height="343" alt="image" src="https://github.com/user-attachments/assets/fe66234a-b2d1-47d0-b031-cda7f86a731a" />  
-</p>  
+<img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/054e2ecb-5652-4c49-a204-e4cf983f2c1d" />  
+<img width="395" height="343" alt="image" src="https://github.com/user-attachments/assets/fe66234a-b2d1-47d0-b031-cda7f86a731a" />  
 
 - clean distributions, no extreme outliers  
 
 - **Bivariate**  
-
-<p align="center">
-  <img width="395" height="333" alt="image" src="https://github.com/user-attachments/assets/eff55d36-e985-441e-a8c7-874b8c20babc" />  
-  <img width="382" height="278" alt="image" src="https://github.com/user-attachments/assets/ff9bc856-4f4f-4a5f-bc54-f9be84efa4bd" />  
-  <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/32c59712-6074-4518-8a1f-1d473619670d" />  
-</p>  
+<img width="395" height="333" alt="image" src="https://github.com/user-attachments/assets/eff55d36-e985-441e-a8c7-874b8c20babc" />  
+<img width="382" height="278" alt="image" src="https://github.com/user-attachments/assets/ff9bc856-4f4f-4a5f-bc54-f9be84efa4bd" />  
+<img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/32c59712-6074-4518-8a1f-1d473619670d" />  
 
 - churn varies strongly by contract type, tenure and payment method  
 
 - **Multivariate correlations**  
-
-<p align="center">
-  <img width="450" height="373" alt="image" src="https://github.com/user-attachments/assets/22dd7501-187a-4d4c-b41f-5246634ce196" />  
-</p>  
+<img width="450" height="373" alt="image" src="https://github.com/user-attachments/assets/22dd7501-187a-4d4c-b41f-5246634ce196" />  
 
 - Total Charges, tenure, monthly charges are highly related.  
 
@@ -172,10 +165,8 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 
 ### Why CatBoost?  
 
-<p align="center">
-  <img width="380" height="288" alt="image" src="https://github.com/user-attachments/assets/cfb89965-cd89-46ba-9051-b66d3b2e5aa2" />  
-  <img width="395" height="288" alt="image" src="https://github.com/user-attachments/assets/4f37383b-2231-4234-9b17-aff5b740d4b9" />  
-</p>  
+<img width="380" height="288" alt="image" src="https://github.com/user-attachments/assets/cfb89965-cd89-46ba-9051-b66d3b2e5aa2" />  
+<img width="395" height="288" alt="image" src="https://github.com/user-attachments/assets/4f37383b-2231-4234-9b17-aff5b740d4b9" />  
 
 - **Highest recall (0.90)** → captures the majority of churners.  
 - Lower precision is acceptable since **false negatives (missed churners)** are costlier than false positives.  
@@ -198,7 +189,7 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 SHAP (SHapley Additive exPlanations) was applied to the **CatBoost model** to explain predictions and highlight the most influential factors behind churn.  
 
 ### 1. SHAP Summary Plot  
-<img width="554" height="667" alt="image" src="https://github.com/user-attachments/assets/982045b6-54df-4889-be5d-015fd1195ef6" />
+<img width="554" height="667" alt="image" src="https://github.com/user-attachments/assets/982045b6-54df-4889-be5d-015fd1195ef6" />  
 
 Top churn drivers:  
 - Month-to-month contracts (strongest risk factor)  
@@ -218,8 +209,8 @@ Top churn reducers:
 
 ---
 
-### 2. SHAP Feature Importance 
-<img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/b514da79-fdc6-4ca3-b769-4e5e4089040b" />
+### 2. SHAP Feature Importance  
+<img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/b514da79-fdc6-4ca3-b769-4e5e4089040b" />  
 
 Top 6 drivers of churn (in order):  
 1. Contract_Month-to-month (dominant factor)  
@@ -238,8 +229,8 @@ Top 6 drivers of churn (in order):
 
 ---
 
-### 3. SHAP Force Plot (Single Prediction) 
-<img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/ff107da9-c746-42e4-9e2e-d9bf472008e6" />
+### 3. SHAP Force Plot (Single Prediction)  
+<img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/ff107da9-c746-42e4-9e2e-d9bf472008e6" />  
 
 Shows individual churn predictions:  
 - **High churn risk**: Fiber optic + month-to-month contracts.  
@@ -250,7 +241,7 @@ Shows individual churn predictions:
 ---
 
 ### 4. SHAP Dependence Plot (Tenure × Monthly Charges)  
-<img width="482" height="321" alt="image" src="https://github.com/user-attachments/assets/f572b25b-da91-4e46-8146-33577d83b7ad" />
+<img width="482" height="321" alt="image" src="https://github.com/user-attachments/assets/f572b25b-da91-4e46-8146-33577d83b7ad" />  
 
 Churn risk varies by tenure:  
 - **0–20 months**: Highest churn risk (danger zone).  
@@ -263,10 +254,8 @@ Churn risk varies by tenure:
 ---
 
 ### 5. SHAP Decision Plots  
-<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/1c0c6ff4-1931-43d4-bdfd-0f0e63071a03" />
-
-<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/3bb90a9e-c992-456e-a025-ca6c35050d3e" />
-
+<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/1c0c6ff4-1931-43d4-bdfd-0f0e63071a03" />  
+<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/3bb90a9e-c992-456e-a025-ca6c35050d3e" />  
 
 - **High-risk path:** Month-to-month contract → no online security → high churn probability.  
 - **Low-risk path:** Two-year contract → longer tenure → bundled services → low churn.  
@@ -328,3 +317,4 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 ## Deployment  
 
 The churn prediction app was deployed **locally using Streamlit** for interactive testing, visualization, and exploration.  
+
