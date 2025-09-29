@@ -9,7 +9,7 @@ In today's competitive telecom market, **customer churn** (when people cancel th
 
 Currently, many companies deal with churn **reactively**, only after customers have already left. **TelcoVision Analytics** aims to change this by using **machine learning** to predict churn before it happens, enabling businesses to step in early with **personalized offers, better support, and improved customer experiences**.  
 
----
+
 
 ## Business Problem  
 
@@ -21,7 +21,7 @@ Telecom providers often lack the ability to accurately identify customers at ris
 **Key Challenge:**  
 How can we leverage customer demographic, billing, and service usage data to accurately predict churn and proactively reduce customer attrition?  
 
----
+
 
 ##  Stakeholders  
 
@@ -41,7 +41,7 @@ How can we leverage customer demographic, billing, and service usage data to acc
 - Build a predictive model to classify customers as **churn** or **non-churn**  
 - Uncover the most important factors influencing churn to guide business strategy  
 
----
+
 
 ## Analysis Objectives  
 
@@ -51,7 +51,7 @@ How can we leverage customer demographic, billing, and service usage data to acc
 - Identify which attributes (e.g., **tenure, monthly charges, contract type**) most strongly predict churn  
 - Assess how well the models distinguish between churners and non-churners  
 
----
+
 
 ## Data Understanding  
 
@@ -87,14 +87,14 @@ We use the **Telco Customer Churn Dataset** from Kaggle to build our prediction 
 | TotalCharges       | Total amount billed                                            | Numeric (Continuous)     |
 | Churn              | Target: Whether the customer left (Yes = churn, No = stayed)   | Categorical (Target)     |
 
----
+
 
 ##  Data Source  
 
 - **Dataset Name:** Telco Customer Churn  
 - **Source:** Kaggle → [Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)  
 
----
+
 
 ## Prediction Target  
 
@@ -132,7 +132,7 @@ This is a **binary classification problem**.
 - **Month-to-month contracts** and **electronic check payments** are high-risk churn factors.  
 - **Long-term contracts** and **multiple bundled services** reduce churn likelihood.  
 
----
+
 
 ## Feature Engineering  
 
@@ -147,9 +147,9 @@ Steps applied:
 4. Fixed missing/invalid values.  
 5. Addressed **class imbalance** (73.5% No vs. 26.5% Yes) using **SMOTE**.  
 
----
 
-## Modeling  
+
+## Modeling  Approach
 
 We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter tuning.  
 
@@ -172,7 +172,6 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 - Lower precision is acceptable since **false negatives (missed churners)** are costlier than false positives.  
 - Handles categorical variables efficiently.  
 
----
 
 ##  Key Performance Indicators (KPIs)  
 
@@ -182,7 +181,7 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 
  **Decision** → Recall chosen as the **main KPI**, since preventing customer loss outweighs campaign inefficiency.  
 
----
+
 
 ## SHAP Interpretability  
 
@@ -207,7 +206,7 @@ Top churn reducers:
 - Bundle online security and tech support into packages.  
 - Pay special attention to fiber optic customers, who are at elevated risk.  
 
----
+
 
 ### 2. SHAP Feature Importance  
 <img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/b514da79-fdc6-4ca3-b769-4e5e4089040b" />  
@@ -227,7 +226,7 @@ Top 6 drivers of churn (in order):
 - Promote online security add-ons.  
 - Investigate dissatisfaction among fiber optic customers.  
 
----
+
 
 ### 3. SHAP Force Plot (Single Prediction)  
 <img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/ff107da9-c746-42e4-9e2e-d9bf472008e6" />  
@@ -238,7 +237,7 @@ Shows individual churn predictions:
 
 **Action:** Focus retention offers on fiber optic + month-to-month customers.  
 
----
+
 
 ### 4. SHAP Dependence Plot (Tenure × Monthly Charges)  
 <img width="482" height="321" alt="image" src="https://github.com/user-attachments/assets/f572b25b-da91-4e46-8146-33577d83b7ad" />  
@@ -251,7 +250,7 @@ Churn risk varies by tenure:
 **Takeaway:** The first 20 months are critical.  
 - Enhance onboarding, provide early engagement incentives, and proactively support new customers.  
 
----
+
 
 ### 5. SHAP Decision Plots  
 <img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/1c0c6ff4-1931-43d4-bdfd-0f0e63071a03" />  
@@ -262,7 +261,7 @@ Churn risk varies by tenure:
 
 **Key Insight:** Contract type is the primary fork that determines churn trajectory.  
 
----
+
 
 ## Conclusion  
 
@@ -274,7 +273,6 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 - First 20 months are the riskiest period for churn.  
 - Fiber optic customers show unexpectedly high churn.  
 
----
 
 ## Recommendations  
 
@@ -293,7 +291,7 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 5. **Model-Based Risk Scoring**  
    - Integrate churn risk scoring into CRM for proactive interventions.  
 
----
+
 
 ## Implementation Roadmap  
 
@@ -302,7 +300,7 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 - **Months 5–6:** Improve fiber optic retention, refine strategies  
 - **Ongoing:** Monitor metrics, run A/B tests, continuously optimize  
 
----
+
 
 ## Success Metrics  
 
@@ -312,7 +310,7 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 - **Early retention:** 20%+ improvement among customers <20 months  
 - **ROI:** Measured as retention investment vs. lifetime value  
 
----
+
 
 ## Deployment  
 
