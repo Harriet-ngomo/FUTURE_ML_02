@@ -1,5 +1,6 @@
 #  Customer Churn Prediction
 # TELCOVISION ANALYTICS  
+
 ## Project Overview  
 
 At **TelcoVision Analytics**, our mission is to help telecom companies use data-driven strategies to keep their customers happy and reduce the chances of them leaving.  
@@ -104,26 +105,32 @@ This is a **binary classification problem**.
 
 ## Exploratory Data Analysis (EDA)  
 
-- **Univariate**
- <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/054e2ecb-5652-4c49-a204-e4cf983f2c1d" />
- <img width="395" height="343" alt="image" src="https://github.com/user-attachments/assets/fe66234a-b2d1-47d0-b031-cda7f86a731a" />
+- **Univariate**  
 
- - clean distributions, no extreme outliers
+<p align="center">
+  <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/054e2ecb-5652-4c49-a204-e4cf983f2c1d" />  
+  <img width="395" height="343" alt="image" src="https://github.com/user-attachments/assets/fe66234a-b2d1-47d0-b031-cda7f86a731a" />  
+</p>  
 
+- clean distributions, no extreme outliers  
 
-- **Bivariate**
-  <img width="395" height="333" alt="image" src="https://github.com/user-attachments/assets/eff55d36-e985-441e-a8c7-874b8c20babc" />
+- **Bivariate**  
 
-<img width="382" height="278" alt="image" src="https://github.com/user-attachments/assets/ff9bc856-4f4f-4a5f-bc54-f9be84efa4bd" />
+<p align="center">
+  <img width="395" height="333" alt="image" src="https://github.com/user-attachments/assets/eff55d36-e985-441e-a8c7-874b8c20babc" />  
+  <img width="382" height="278" alt="image" src="https://github.com/user-attachments/assets/ff9bc856-4f4f-4a5f-bc54-f9be84efa4bd" />  
+  <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/32c59712-6074-4518-8a1f-1d473619670d" />  
+</p>  
 
-<img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/32c59712-6074-4518-8a1f-1d473619670d" />
+- churn varies strongly by contract type, tenure and payment method  
 
-- churn varies strongly by contract type, tenure and payment method
-- **Multivariate correlations**
- <img width="450" height="373" alt="image" src="https://github.com/user-attachments/assets/22dd7501-187a-4d4c-b41f-5246634ce196" />
+- **Multivariate correlations**  
 
+<p align="center">
+  <img width="450" height="373" alt="image" src="https://github.com/user-attachments/assets/22dd7501-187a-4d4c-b41f-5246634ce196" />  
+</p>  
 
-- tenure, monthly charges, and churn are highly related.  
+- Total Charges, tenure, monthly charges are highly related.  
 
 **Key Insights:**  
 - **Month-to-month contracts** and **electronic check payments** are high-risk churn factors.  
@@ -160,10 +167,12 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 | LightGBM              | GridSearchCV        | 0.69   | 0.55      | Fast boosting, balanced |
 | **CatBoost ✅**        | RandomizedSearchCV  | **0.90** | 0.44 | Best recall, selected final model |
 
-### Why CatBoost? 
-<img width="380" height="288" alt="image" src="https://github.com/user-attachments/assets/cfb89965-cd89-46ba-9051-b66d3b2e5aa2" />
-<img width="395" height="288" alt="image" src="https://github.com/user-attachments/assets/4f37383b-2231-4234-9b17-aff5b740d4b9" />
+### Why CatBoost?  
 
+<p align="center">
+  <img width="380" height="288" alt="image" src="https://github.com/user-attachments/assets/cfb89965-cd89-46ba-9051-b66d3b2e5aa2" />  
+  <img width="395" height="288" alt="image" src="https://github.com/user-attachments/assets/4f37383b-2231-4234-9b17-aff5b740d4b9" />  
+</p>  
 
 - **Highest recall (0.90)** → captures the majority of churners.  
 - Lower precision is acceptable since **false negatives (missed churners)** are costlier than false positives.  
@@ -182,7 +191,10 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 ---
 
 ##  SHAP Interpretability  
-<img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/44d3c7bf-2cca-494b-b54a-cc3ef80d7a83" />
+
+<p align="center">
+  <img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/44d3c7bf-2cca-494b-b54a-cc3ef80d7a83" />  
+</p>  
 
 SHAP (SHapley Additive exPlanations) was applied to the **CatBoost model** for interpretability.  
 
@@ -190,25 +202,21 @@ SHAP (SHapley Additive exPlanations) was applied to the **CatBoost model** for i
 <p align="center">  
   <img width="554" src="https://github.com/user-attachments/assets/b30b86e3-a67a-4524-b9d1-06a2305dab39" />  
 </p>  
-Shows the overall impact and direction of each feature.  
 
 ### 2. SHAP Feature Importance  
 <p align="center">  
   <img width="559" src="https://github.com/user-attachments/assets/42496805-e423-4138-8c15-932171cade22" />  
 </p>  
-Ranks features by their average contribution to churn predictions.  
 
 ### 3. SHAP Force Plot (Single Sample)  
 <p align="center">  
   <img width="559" src="https://github.com/user-attachments/assets/dd7df209-b256-4be8-9f32-c165fbbbac4d" />  
 </p>  
-Explains how individual features push a single prediction toward churn or retention.  
 
 ### 4. SHAP Dependence Plot (Tenure × MonthlyCharges)  
 <p align="center">  
   <img width="482" src="https://github.com/user-attachments/assets/931ce0bb-5900-4010-a1f4-efbdb387f2f8" />  
 </p>  
-Shows new customers (<20 months) with high charges are at **highest churn risk**.  
 
 ### 5. SHAP Decision Plots  
 <p align="center">  
@@ -217,7 +225,6 @@ Shows new customers (<20 months) with high charges are at **highest churn risk**
 <p align="center">  
   <img width="667" src="https://github.com/user-attachments/assets/61c79369-b590-4f47-afdc-15f9fbdac365" />  
 </p>  
-Visualizes decision paths: churners (red, right) vs retainers (blue, left).  
 
 ---
 
@@ -237,4 +244,4 @@ Visualizes decision paths: churners (red, right) vs retainers (blue, left).
 - SHAP confirms business logic with transparent feature influence.  
 
 ### Recommendations  
-- Incentivize **month-to-month customers** to switch to long-term contracts
+- Incentivize **month-to-month customers** to switch to long-term contracts  
