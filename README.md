@@ -105,7 +105,10 @@ This is a **binary classification problem**.
 
 ## Exploratory Data Analysis (EDA)  
 
-- **Univariate**  
+- **Univariate**
+  <img width="444" height="288" alt="image" src="https://github.com/user-attachments/assets/c95f4cac-9443-419a-b748-b78098320fe1" /
+  <img width="488" height="285" alt="image" src="https://github.com/user-attachments/assets/66f1e581-a666-46c5-aa48-15a6a24315e0" />
+  <img width="544" height="299" alt="image" src="https://github.com/user-attachments/assets/48c33e5e-4d94-456f-9f7b-9b2684adaf95" />
 
 <p align="center">
   <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/054e2ecb-5652-4c49-a204-e4cf983f2c1d" />  
@@ -190,58 +193,138 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 
 ---
 
-##  SHAP Interpretability  
+## SHAP Interpretability  
 
-<p align="center">
-  <img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/44d3c7bf-2cca-494b-b54a-cc3ef80d7a83" />  
-</p>  
-
-SHAP (SHapley Additive exPlanations) was applied to the **CatBoost model** for interpretability.  
+SHAP (SHapley Additive exPlanations) was applied to the **CatBoost model** to explain predictions and highlight the most influential factors behind churn.  
 
 ### 1. SHAP Summary Plot  
-<p align="center">  
-  <img width="554" src="https://github.com/user-attachments/assets/b30b86e3-a67a-4524-b9d1-06a2305dab39" />  
-</p>  
+<img width="554" height="667" alt="image" src="https://github.com/user-attachments/assets/982045b6-54df-4889-be5d-015fd1195ef6" />
 
-### 2. SHAP Feature Importance  
-<p align="center">  
-  <img width="559" src="https://github.com/user-attachments/assets/42496805-e423-4138-8c15-932171cade22" />  
-</p>  
+Top churn drivers:  
+- Month-to-month contracts (strongest risk factor)  
+- No online security  
+- No tech support  
+- Fiber optic service  
 
-### 3. SHAP Force Plot (Single Sample)  
-<p align="center">  
-  <img width="559" src="https://github.com/user-attachments/assets/dd7df209-b256-4be8-9f32-c165fbbbac4d" />  
-</p>  
+Top churn reducers:  
+- Two-year contracts (most protective)  
+- Longer tenure  
+- Security service add-ons  
 
-### 4. SHAP Dependence Plot (Tenure × MonthlyCharges)  
-<p align="center">  
-  <img width="482" src="https://github.com/user-attachments/assets/931ce0bb-5900-4010-a1f4-efbdb387f2f8" />  
-</p>  
+**Action Plan:**  
+- Prioritize converting month-to-month customers into 1–2 year contracts.  
+- Bundle online security and tech support into packages.  
+- Pay special attention to fiber optic customers, who are at elevated risk.  
+
+---
+
+### 2. SHAP Feature Importance 
+<img width="559" height="667" alt="image" src="https://github.com/user-attachments/assets/b514da79-fdc6-4ca3-b769-4e5e4089040b" />
+
+Top 6 drivers of churn (in order):  
+1. Contract_Month-to-month (dominant factor)  
+2. OnlineSecurity_No  
+3. Contract_Two year (protective)  
+4. InternetService_Fiber optic  
+5. TechSupport_No  
+6. Tenure  
+
+**Key Insight:** Contract type is overwhelmingly the most impactful feature, carrying 3× more weight than any other factor.  
+
+**Priority Actions:**  
+- Target month-to-month customers with long-term contract offers.  
+- Promote online security add-ons.  
+- Investigate dissatisfaction among fiber optic customers.  
+
+---
+
+### 3. SHAP Force Plot (Single Prediction) 
+<img width="1130" height="255" alt="image" src="https://github.com/user-attachments/assets/ff107da9-c746-42e4-9e2e-d9bf472008e6" />
+
+Shows individual churn predictions:  
+- **High churn risk**: Fiber optic + month-to-month contracts.  
+- **Low churn risk**: Two-year contracts + security and support add-ons.  
+
+**Action:** Focus retention offers on fiber optic + month-to-month customers.  
+
+---
+
+### 4. SHAP Dependence Plot (Tenure × Monthly Charges)  
+<img width="482" height="321" alt="image" src="https://github.com/user-attachments/assets/f572b25b-da91-4e46-8146-33577d83b7ad" />
+
+Churn risk varies by tenure:  
+- **0–20 months**: Highest churn risk (danger zone).  
+- **20–40 months**: Risk declines rapidly.  
+- **40+ months**: Customers become stable.  
+
+**Takeaway:** The first 20 months are critical.  
+- Enhance onboarding, provide early engagement incentives, and proactively support new customers.  
+
+---
 
 ### 5. SHAP Decision Plots  
-<p align="center">  
-  <img width="667" src="https://github.com/user-attachments/assets/2b2baf27-1d3c-4bff-91f8-e637235acfd3" />  
-</p>  
-<p align="center">  
-  <img width="667" src="https://github.com/user-attachments/assets/61c79369-b590-4f47-afdc-15f9fbdac365" />  
-</p>  
+<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/1c0c6ff4-1931-43d4-bdfd-0f0e63071a03" />
+
+<img width="667" height="586" alt="image" src="https://github.com/user-attachments/assets/3bb90a9e-c992-456e-a025-ca6c35050d3e" />
+
+
+- **High-risk path:** Month-to-month contract → no online security → high churn probability.  
+- **Low-risk path:** Two-year contract → longer tenure → bundled services → low churn.  
+
+**Key Insight:** Contract type is the primary fork that determines churn trajectory.  
 
 ---
 
-###  Key SHAP Insights  
-- **Contract_Two year** strongly reduces churn risk.  
-- **InternetService_Fiber optic** increases churn risk.  
-- **Electronic check payments** are associated with churn.  
-- **Short-tenure, high-paying customers** are at highest risk.  
+## Conclusion  
+
+The project successfully achieved its goals with a high-performing **CatBoost model** supported by SHAP interpretability.  
+
+**Key Findings:**  
+- Month-to-month contracts are the #1 churn driver.  
+- Online security and tech support are the next most important.  
+- First 20 months are the riskiest period for churn.  
+- Fiber optic customers show unexpectedly high churn.  
 
 ---
 
-## Conclusion & Recommendations  
+## Recommendations  
 
-### Conclusion  
-- **CatBoost** is the final deployed model with highest recall.  
-- Key churn drivers: **contract type, tenure, payment method, add-on services**.  
-- SHAP confirms business logic with transparent feature influence.  
+1. **Contract Conversion Program (Top Priority)**  
+   - Incentivize upgrades from month-to-month → long-term contracts.  
 
-### Recommendations  
-- Incentivize **month-to-month customers** to switch to long-term contracts  
+2. **Service Bundle Strategy**  
+   - Include or heavily promote online security + tech support.  
+
+3. **Critical First 20 Months Program**  
+   - Enhance onboarding, provide proactive check-ins, and reward early loyalty.  
+
+4. **Fiber Optic Retention Plan**  
+   - Investigate dissatisfaction and improve customer experience.  
+
+5. **Model-Based Risk Scoring**  
+   - Integrate churn risk scoring into CRM for proactive interventions.  
+
+---
+
+## Implementation Roadmap  
+
+- **Months 1–2:** Deploy churn scoring + contract conversion campaigns  
+- **Months 3–4:** Launch bundles + onboarding program  
+- **Months 5–6:** Improve fiber optic retention, refine strategies  
+- **Ongoing:** Monitor metrics, run A/B tests, continuously optimize  
+
+---
+
+## Success Metrics  
+
+- **Churn reduction:** 15–25% within 6 months  
+- **Contract conversion:** 30%+ shift to long-term contracts  
+- **Service adoption:** 40%+ increase in add-on usage  
+- **Early retention:** 20%+ improvement among customers <20 months  
+- **ROI:** Measured as retention investment vs. lifetime value  
+
+---
+
+## Deployment  
+
+The churn prediction app was deployed **locally using Streamlit** for interactive testing, visualization, and exploration.  
