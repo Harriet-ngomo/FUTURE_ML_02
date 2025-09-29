@@ -159,7 +159,7 @@ with col2:
             feature_names=feature_names,
             matplotlib=False
         )
-        st_shap(shap_plot, height=800)  # increased from 400 → 800 for bigger plot
+        st_shap(shap_plot)  
 
         # ---------------------
         # Summary Plot
