@@ -1,7 +1,7 @@
-#  Customer Churn Prediction
+#  **Customer Churn Prediction**
 # TELCOVISION ANALYTICS  
 
-## Project Overview  
+## **Project Overview**  
 
 At **TelcoVision Analytics**, our mission is to help telecom companies use data-driven strategies to keep their customers happy and reduce the chances of them leaving.  
 
@@ -11,7 +11,7 @@ Currently, many companies deal with churn **reactively**, only after customers h
 
 
 
-## Business Problem  
+## **Business Problem** 
 
 Telecom providers often lack the ability to accurately identify customers at risk of leaving. This leads to:  
 - Inefficient marketing spending on blanket retention campaigns  
@@ -23,7 +23,7 @@ How can we leverage customer demographic, billing, and service usage data to acc
 
 
 
-##  Stakeholders  
+##  **Stakeholders**  
 
 | Stakeholder        | Role / Interest                                                             |
 |--------------------|------------------------------------------------------------------------------|
@@ -33,9 +33,9 @@ How can we leverage customer demographic, billing, and service usage data to acc
 | Data Science Team  | Build and maintain churn prediction models                                   |
 | Customers          | Benefit from improved service, offers, and satisfaction                      |
 
----
 
-## Business Objectives  
+
+## **Business Objectives**  
 
 - Improve customer retention by identifying and intervening with high-risk customers  
 - Build a predictive model to classify customers as **churn** or **non-churn**  
@@ -43,7 +43,7 @@ How can we leverage customer demographic, billing, and service usage data to acc
 
 
 
-## Analysis Objectives  
+## **Analysis Objectives**  
 
 - Build and evaluate a **machine learning classification model** to predict customer churn  
 - Start with **Logistic Regression (baseline)**, then experiment with advanced models:  
@@ -53,7 +53,7 @@ How can we leverage customer demographic, billing, and service usage data to acc
 
 
 
-## Data Understanding  
+## **Data Understanding**  
 
 We use the **Telco Customer Churn Dataset** from Kaggle to build our prediction model.  
 
@@ -61,7 +61,7 @@ We use the **Telco Customer Churn Dataset** from Kaggle to build our prediction 
 - **Records:** 7,043 customers  
 - **Features:** 21 (demographics, account info, services, churn label)  
 
-### Dataset Columns  
+### **Dataset Columns**  
 
 | Column Name        | Description                                                    | Data Type                |
 |--------------------|----------------------------------------------------------------|--------------------------|
@@ -89,14 +89,14 @@ We use the **Telco Customer Churn Dataset** from Kaggle to build our prediction 
 
 
 
-##  Data Source  
+##  **Data Source**  
 
 - **Dataset Name:** Telco Customer Churn  
 - **Source:** Kaggle → [Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)  
 
 
 
-## Prediction Target  
+## **Prediction Target**  
 
 We aim to predict the **`Churn`** variable, which indicates whether a customer has stopped using the service (`Yes`) or is still active (`No`).  
 
@@ -104,9 +104,9 @@ This is a **binary classification problem**.
 
 ---
 
-## Exploratory Data Analysis (EDA)  
+## **Exploratory Data Analysis** 
 
-- **Univariate**  
+### **Univariate**  
 <img width="444" height="288" alt="image" src="https://github.com/user-attachments/assets/c95f4cac-9443-419a-b748-b78098320fe1" />  
 <img width="488" height="285" alt="image" src="https://github.com/user-attachments/assets/66f1e581-a666-46c5-aa48-15a6a24315e0" />  
 <img width="544" height="299" alt="image" src="https://github.com/user-attachments/assets/48c33e5e-4d94-456f-9f7b-9b2684adaf95" />  
@@ -116,14 +116,14 @@ This is a **binary classification problem**.
 
 - clean distributions, no extreme outliers  
 
-- **Bivariate**  
+### **Bivariate**  
 <img width="395" height="333" alt="image" src="https://github.com/user-attachments/assets/eff55d36-e985-441e-a8c7-874b8c20babc" />  
 <img width="382" height="278" alt="image" src="https://github.com/user-attachments/assets/ff9bc856-4f4f-4a5f-bc54-f9be84efa4bd" />  
 <img width="398" height="367" alt="image" src="https://github.com/user-attachments/assets/32c59712-6074-4518-8a1f-1d473619670d" />  
 
 - churn varies strongly by contract type, tenure and payment method  
 
-- **Multivariate correlations**  
+### **Multivariate correlations**  
 <img width="450" height="373" alt="image" src="https://github.com/user-attachments/assets/22dd7501-187a-4d4c-b41f-5246634ce196" />  
 
 - Total Charges, tenure, monthly charges are highly related.  
@@ -134,9 +134,7 @@ This is a **binary classification problem**.
 
 
 
-## Feature Engineering  
-
-Steps applied:  
+## **Feature Engineering**   
 1. Removed irrelevant IDs (`customerID`).  
 2. Encoded categorical variables (**OneHotEncoder**).  
 3. Created new features:  
@@ -149,7 +147,7 @@ Steps applied:
 
 
 
-## Modeling  Approach
+## **Modeling  Approach**
 
 We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter tuning.  
 
@@ -163,7 +161,7 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 | LightGBM              | GridSearchCV        | 0.69   | 0.55      | Fast boosting, balanced |
 | **CatBoost ✅**        | RandomizedSearchCV  | **0.90** | 0.44 | Best recall, selected final model |
 
-### Why CatBoost?  
+### Why **CatBoost?**  
 
 <img width="380" height="288" alt="image" src="https://github.com/user-attachments/assets/cfb89965-cd89-46ba-9051-b66d3b2e5aa2" />  
 <img width="395" height="288" alt="image" src="https://github.com/user-attachments/assets/4f37383b-2231-4234-9b17-aff5b740d4b9" />  
@@ -183,7 +181,7 @@ We evaluated **7 models** using preprocessing pipelines + SMOTE + hyperparameter
 
 
 
-## SHAP Interpretability  
+## **SHAP Interpretability** 
 
 SHAP (SHapley Additive exPlanations) was applied to the **CatBoost model** to explain predictions and highlight the most influential factors behind churn.  
 
@@ -263,7 +261,7 @@ Churn risk varies by tenure:
 
 
 
-## Conclusion  
+## **Conclusion**  
 
 The project successfully achieved its goals with a high-performing **CatBoost model** supported by SHAP interpretability.  
 
@@ -274,7 +272,7 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 - Fiber optic customers show unexpectedly high churn.  
 
 
-## Recommendations  
+## **Recommendations** 
 
 1. **Contract Conversion Program (Top Priority)**  
    - Incentivize upgrades from month-to-month → long-term contracts.  
@@ -293,7 +291,7 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 
 
 
-## Implementation Roadmap  
+## **Implementation Roadmap**  
 
 - **Months 1–2:** Deploy churn scoring + contract conversion campaigns  
 - **Months 3–4:** Launch bundles + onboarding program  
@@ -302,7 +300,7 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 
 
 
-## Success Metrics  
+## **Success Metrics**  
 
 - **Churn reduction:** 15–25% within 6 months  
 - **Contract conversion:** 30%+ shift to long-term contracts  
@@ -312,7 +310,7 @@ The project successfully achieved its goals with a high-performing **CatBoost mo
 
 
 
-## Deployment  
+## **Deployment**
 
 The churn prediction app was deployed **locally using Streamlit** for interactive testing, visualization, and exploration.  
 
