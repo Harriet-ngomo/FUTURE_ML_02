@@ -7,11 +7,9 @@ import seaborn as sns
 import os
 
 # =====================
-# SHAP Helper for Streamlit
+# Page Config
 # =====================
-def st_shap(plot, height=None):
-    shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
-    st.components.v1.html(shap_html, height=height)
+st.set_page_config(page_title="Customer Churn Prediction", layout="wide")
 
 # =====================
 # Load trained pipeline safely
@@ -23,7 +21,9 @@ if not os.path.exists("catboost_pipeline.pkl"):
 with open("catboost_pipeline.pkl", "rb") as f:
     pipeline = pickle.load(f)
 
-st.set_page_config(layout="wide")
+# =====================
+# Title
+# =====================
 st.title("📊 Customer Churn Prediction with Explainability")
 
 # =====================
@@ -32,10 +32,19 @@ st.title("📊 Customer Churn Prediction with Explainability")
 col1, col2 = st.columns([1, 2])
 
 # ---------------------
-# LEFT COLUMN (Inputs)
+# LEFT COLUMN (Intro + Inputs)
 # ---------------------
 with col1:
-    st.header("Enter Customer Details")
+    st.header("👋 Welcome!")
+    st.markdown("""
+    This interactive app predicts **customer churn** using a trained CatBoost model.  
+
+    - Enter customer details below  
+    - Get a **prediction** with churn probability  
+    - Explore **explainability plots (SHAP)** showing *why* the prediction was made  
+    """)
+
+    st.subheader("Enter Customer Details")
 
     gender = st.selectbox("Gender", ["Female", "Male"])
     senior_citizen = st.selectbox("Senior Citizen", [0, 1])
@@ -106,10 +115,10 @@ with col1:
     )
 
 # ---------------------
-# RIGHT COLUMN (Prediction + SHAP + Distribution)
+# RIGHT COLUMN (Prediction + Explainability)
 # ---------------------
 with col2:
-    if st.button("Predict Churn"):
+    if st.button("🚀 Predict Churn"):
         try:
             prediction = pipeline.predict(input_data)[0]
             proba = pipeline.predict_proba(input_data)[0][1]
@@ -128,7 +137,6 @@ with col2:
         try:
             if hasattr(pipeline, "X_train_"):
                 all_probs = pipeline.predict_proba(pipeline.X_train_)[:, 1]
-
                 fig, ax = plt.subplots()
                 sns.histplot(all_probs, bins=20, kde=True, ax=ax)
                 ax.axvline(proba, color="red", linestyle="--", label="Current Customer")
@@ -138,45 +146,45 @@ with col2:
                 ax.legend()
                 st.pyplot(fig)
             else:
-                st.warning("Training data not available in pipeline. Distribution cannot be shown.")
+                st.info("ℹ️ Training data not saved in pipeline, skipping distribution plot.")
         except Exception as e:
-            st.error(f"Could not generate distribution plot: {e}")
+            st.warning(f"Could not generate distribution plot: {e}")
 
         # =====================
         # SHAP Explainability
         # =====================
         st.subheader("📈 Model Explainability (SHAP)")
+
         try:
             model = pipeline.named_steps['catboost']
             preprocessor = pipeline.named_steps['preprocessor']
 
+            # Local explanation
             input_transformed = preprocessor.transform(input_data)
             feature_names = preprocessor.get_feature_names_out()
-
             explainer = shap.TreeExplainer(model)
-            shap_values = explainer.shap_values(input_transformed)
+            shap_values_input = explainer(input_transformed)
 
-            # Force Plot
-            shap_plot = shap.force_plot(
-                explainer.expected_value,
-                shap_values[0, :],
-                feature_names=feature_names,
-                matplotlib=False
-            )
-            st_shap(shap_plot)
+            st.markdown("#### 🔍 Why this prediction?")
+            shap.plots.waterfall(shap_values_input[0], show=False)
+            st.pyplot(bbox_inches='tight')
 
-            # Summary Plot
-            st.subheader("📊 SHAP Summary Plot")
-            if isinstance(shap_values, list):
-                shap_values = shap_values[1]
+            # Global explanation (using training set if available)
+            st.markdown("#### 🌍 Global Feature Importance")
+            if hasattr(pipeline, "X_train_"):
+                X_train_transformed = preprocessor.transform(pipeline.X_train_)
+                shap_values_global = explainer(X_train_transformed)
 
-            fig_summary, ax_summary = plt.subplots(figsize=(10, 6))
-            shap.summary_plot(
-                shap_values,
-                input_transformed,
-                feature_names=feature_names,
-                show=False
-            )
-            st.pyplot(fig_summary)
+                fig_summary, ax_summary = plt.subplots(figsize=(10, 6))
+                shap.summary_plot(
+                    shap_values_global.values,
+                    X_train_transformed,
+                    feature_names=feature_names,
+                    show=False
+                )
+                st.pyplot(fig_summary)
+            else:
+                st.info("ℹ️ Training data not available in pipeline. Showing only single-customer explanation.")
+
         except Exception as e:
             st.error(f"SHAP explanation failed: {e}")
