@@ -1,5 +1,5 @@
 # Core
-streamlit==1.50.0
+streamlit>=1.30
 pandas==2.3.2
 numpy>=1.26,<2.4
 scikit-learn==1.3.2
@@ -21,13 +21,3 @@ shap==0.44.1
 
 # Utils
 tqdm==4.67.1
-
-
-
-
-
-
-
-
-
-

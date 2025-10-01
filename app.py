@@ -4,6 +4,7 @@ import pickle
 import shap
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 # =====================
 # SHAP Helper for Streamlit
@@ -13,18 +14,22 @@ def st_shap(plot, height=None):
     st.components.v1.html(shap_html, height=height)
 
 # =====================
-# Load trained pipeline
+# Load trained pipeline safely
 # =====================
+if not os.path.exists("catboost_pipeline.pkl"):
+    st.error("❌ Model file (catboost_pipeline.pkl) not found. Please upload it to the repository root.")
+    st.stop()
+
 with open("catboost_pipeline.pkl", "rb") as f:
     pipeline = pickle.load(f)
 
-st.set_page_config(layout="wide")  # wide mode for 2-column layout
+st.set_page_config(layout="wide")
 st.title("📊 Customer Churn Prediction with Explainability")
 
 # =====================
 # Two-column layout
 # =====================
-col1, col2 = st.columns([1, 2])  # left narrower, right wider
+col1, col2 = st.columns([1, 2])
 
 # ---------------------
 # LEFT COLUMN (Inputs)
@@ -105,12 +110,16 @@ with col1:
 # ---------------------
 with col2:
     if st.button("Predict Churn"):
-        prediction = pipeline.predict(input_data)[0]
-        proba = pipeline.predict_proba(input_data)[0][1]
+        try:
+            prediction = pipeline.predict(input_data)[0]
+            proba = pipeline.predict_proba(input_data)[0][1]
 
-        st.subheader("🔮 Prediction Result")
-        st.write(f"Churn: **{'Yes' if prediction == 1 else 'No'}**")
-        st.write(f"Probability of Churn: **{proba:.2f}**")
+            st.subheader("🔮 Prediction Result")
+            st.write(f"Churn: **{'Yes' if prediction == 1 else 'No'}**")
+            st.write(f"Probability of Churn: **{proba:.2f}**")
+        except Exception as e:
+            st.error(f"Prediction failed: {e}")
+            st.stop()
 
         # =====================
         # Churn Probability Distribution
@@ -136,44 +145,38 @@ with col2:
         # =====================
         # SHAP Explainability
         # =====================
-        
         st.subheader("📈 Model Explainability (SHAP)")
+        try:
+            model = pipeline.named_steps['catboost']
+            preprocessor = pipeline.named_steps['preprocessor']
 
-        # Extract model and preprocessor from pipeline
-        model = pipeline.named_steps['catboost']
-        preprocessor = pipeline.named_steps['preprocessor']
+            input_transformed = preprocessor.transform(input_data)
+            feature_names = preprocessor.get_feature_names_out()
 
-        # Transform input for SHAP
-        input_transformed = preprocessor.transform(input_data)
-        feature_names = preprocessor.get_feature_names_out()
+            explainer = shap.TreeExplainer(model)
+            shap_values = explainer.shap_values(input_transformed)
 
-        explainer = shap.TreeExplainer(model)
-        shap_values = explainer.shap_values(input_transformed)
+            # Force Plot
+            shap_plot = shap.force_plot(
+                explainer.expected_value,
+                shap_values[0, :],
+                feature_names=feature_names,
+                matplotlib=False
+            )
+            st_shap(shap_plot)
 
-        # ---------------------
-        # Force Plot (Bigger)
-        # ---------------------
-        shap_plot = shap.force_plot(
-            explainer.expected_value,
-            shap_values[0, :],
-            feature_names=feature_names,
-            matplotlib=False
-        )
-        st_shap(shap_plot)  
+            # Summary Plot
+            st.subheader("📊 SHAP Summary Plot")
+            if isinstance(shap_values, list):
+                shap_values = shap_values[1]
 
-        # ---------------------
-        # Summary Plot
-        # ---------------------
-        st.subheader("📊 SHAP Summary Plot")
-
-        if isinstance(shap_values, list):  # handle CatBoost multiclass case
-            shap_values = shap_values[1]
-
-        fig_summary, ax_summary = plt.subplots(figsize=(10, 6))
-        shap.summary_plot(
-            shap_values,
-            input_transformed,
-            feature_names=feature_names,
-            show=False
-        )
-        st.pyplot(fig_summary)
+            fig_summary, ax_summary = plt.subplots(figsize=(10, 6))
+            shap.summary_plot(
+                shap_values,
+                input_transformed,
+                feature_names=feature_names,
+                show=False
+            )
+            st.pyplot(fig_summary)
+        except Exception as e:
+            st.error(f"SHAP explanation failed: {e}")
