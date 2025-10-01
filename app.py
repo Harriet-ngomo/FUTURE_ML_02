@@ -5,6 +5,14 @@ import shap
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import streamlit.components.v1 as components  # ✅ needed for force plot
+
+# =====================
+# Helper to render SHAP force plots
+# =====================
+def st_shap(plot, height=None):
+    shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
+    components.html(shap_html, height=height)
 
 # =====================
 # Page Config
@@ -166,8 +174,20 @@ with col2:
             shap_values_input = explainer(input_transformed)
 
             st.markdown("#### 🔍 Why this prediction?")
+
+            # --- Interactive Force Plot ---
+            force_plot = shap.force_plot(
+                explainer.expected_value,
+                shap_values_input.values[0],
+                feature_names=feature_names,
+                matplotlib=False
+            )
+            st_shap(force_plot, height=300)
+
+            # --- Static Waterfall as backup ---
+            fig_waterfall, ax = plt.subplots(figsize=(8, 6))
             shap.plots.waterfall(shap_values_input[0], show=False)
-            st.pyplot(bbox_inches='tight')
+            st.pyplot(fig_waterfall)
 
             # Global explanation (using training set if available)
             st.markdown("#### 🌍 Global Feature Importance")
