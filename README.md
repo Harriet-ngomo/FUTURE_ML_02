@@ -1,6 +1,5 @@
 #  **Customer Churn Prediction**
 # TELCOVISION ANALYTICS  
-<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/69925014-fa75-4074-9b57-9c59937cf33e" />
 
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a029d96d-ac1f-49e6-be23-e627e9d76934" />
 
@@ -15,6 +14,7 @@ Currently, many companies deal with churn **reactively**, only after customers h
 
 
 ## **Business Problem** 
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/69925014-fa75-4074-9b57-9c59937cf33e" />
 
 Telecom providers often lack the ability to accurately identify customers at risk of leaving. This leads to:  
 - Inefficient marketing spending on blanket retention campaigns  
