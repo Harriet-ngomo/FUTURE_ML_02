@@ -1,7 +1,8 @@
 #  **Customer Churn Prediction**
+# TELCOVISION ANALYTICS  
 <img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/69925014-fa75-4074-9b57-9c59937cf33e" />
 
-# TELCOVISION ANALYTICS  
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/a029d96d-ac1f-49e6-be23-e627e9d76934" />
 
 ## **Project Overview**  
 
