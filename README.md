@@ -298,6 +298,8 @@ This approach ensures that customer retention efforts are **data-driven, targete
 
 
 ## **Deployment**
+[![Demo Video](https://img.youtube.com/vi/gYSxqti84eQ/0.jpg)](https://youtu.be/gYSxqti84eQ)
+
 
 The churn prediction app was deployed **locally using Streamlit** for interactive testing, visualization, and exploration.  
 
